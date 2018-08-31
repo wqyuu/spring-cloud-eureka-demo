@@ -1,0 +1,116 @@
+#公共配置
+server:
+    port: 80
+    tomcat:
+      uri-encoding: UTF-8
+spring:
+  application:
+      name: eureka-provider
+  #激活哪一个环境的配置文件
+  profiles:
+    active: dev
+  #连接池配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      # 配置测试查询语句
+      validationQuery: SELECT 1 FROM DUAL
+      # 初始化大小，最小，最大
+      initialSize: 10
+      minIdle: 10
+      maxActive: 200
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 180000
+      testOnBorrow: false
+      testWhileIdle: true
+      removeAbandoned: true
+      removeAbandonedTimeout: 1800
+      logAbandoned: true
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 100
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,log4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
+#配置eureka获取服务地址
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1001/eureka/
+  #配置Swagger相关信息
+  instance:
+      prefer-ip-address: true
+      instanceId: ${spring.cloud.client.ipAddress}:${server.port}
+      status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}/swagger-ui.html # ${server.port}为该服务的端口号
+
+#mybatis
+mybatis:
+  # 实体类扫描
+  type-aliases-package: cn.zhangbox.springboot.entity
+  # 配置映射文件位置
+  mapper-locations: classpath:mapper/*.xml
+  # 开启驼峰匹配
+  mapUnderscoreToCamelCase: true
+
+---
+#开发环境配置
+server:
+  #端口
+  port: 8080
+spring:
+  profiles: dev
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/springbootstart?useUnicode=true&characterEncoding=utf8&useSSL=false&tinyInt1isBit=true
+    username: root
+    password: 3306
+#日志
+logging:
+  config: classpath:log/logback.xml
+  path: D:/APP/SpingBoot/spring-cloud-study/logs/cloud-demo
+
+---
+#测试环境配置
+server:
+  #端口
+  port: 80
+spring:
+  profiles: test
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/springbootstart?useUnicode=true&characterEncoding=utf8&useSSL=false&tinyInt1isBit=true
+    username: root
+    password: 3306
+#日志
+logging:
+  config: classpath:log/logback.xml
+  path: D:/APP/SpingBoot/spring-cloud-study/logs/cloud-demo
+
+---
+#生产环境配置
+server:
+  #端口
+  port: 8080
+spring:
+  profiles: prod
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/springbootstart?useUnicode=true&characterEncoding=utf8&useSSL=false&tinyInt1isBit=true
+    username: root
+    password: 3306
+#日志
+logging:
+  config: classpath:log/logback.xml
+  path: D:/APP/SpingBoot/spring-cloud-study/logs/cloud-demo
+
+
+
+
+
+
+
+

@@ -1,0 +1,71 @@
+#公共配置
+server:
+    port: 80
+    tomcat:
+      uri-encoding: UTF-8
+spring:
+  #服务名称，更关键，使用feign进行服务消费将以此为依据
+  application:
+        name: eureka-consumer
+  #激活哪一个环境的配置文件
+  profiles:
+    active: dev
+
+#配置eureka获取服务地址，这里使用的是本地注册中心
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1001/eureka/
+  #配置instance相关信息
+  instance:
+      prefer-ip-address: true
+      instanceId: ${spring.cloud.client.ipAddress}:${server.port}
+      status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}/swagger-ui.html # ${server.port}为该服务的端口号
+feign:
+  hystrix:
+   enabled: true
+
+
+---
+#开发环境配置
+server:
+  #端口
+  port: 8081
+spring:
+  profiles: dev
+#日志
+logging:
+  config: classpath:log/logback.xml
+  path: D:/APP/SpingBoot/spring-cloud-study/logs/cloud-demo
+
+---
+#测试环境配置
+server:
+  #端口
+  port: 8082
+spring:
+  profiles: test
+#日志
+logging:
+  config: classpath:log/logback.xml
+  path: D:/APP/SpingBoot/spring-cloud-study/logs/cloud-demo
+
+---
+#生产环境配置
+server:
+  #端口
+  port: 8083
+spring:
+  profiles: prod
+#日志
+logging:
+  config: classpath:log/logback.xml
+  path: D:/APP/SpingBoot/spring-cloud-study/logs/cloud-demo
+
+
+
+
+
+
+
+
